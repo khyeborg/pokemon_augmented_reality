@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+
+    <title>Pokemon Augmented Reality</title>
+
+    <!-- A-Frame VR Library -->
+        <script src="libraries/aframe.min.js"></script>
+
+        <!-- ARToolKit for A-Frame VR Library -->
+        <script src='libraries/aframe-ar.js'></script>
+
+        <!-- P5 libraries -->
+        <script language="javascript" type="text/javascript" src="libraries/p5.js"></script>
+        <script language="javascript" type="text/javascript" src="libraries/p5.dom.min.js"></script>
+
+        <!-- Craig's AFrameP5 AR library -->
+        <script language="javascript" type="text/javascript" src="libraries/aframep5_ar.js"></script>
+    
+    <!-- P5 Sketch -->
+    <script language="javascript" type="text/javascript" src="Pokemon.js"></script>
+    <script language="javascript" type="text/javascript" src="MarkerPokemon.js"></script>
+    <script language="javascript" type="text/javascript" src="Pokeball.js"></script>
+    <!-- <script language="javascript" type="text/javascript" src="Poliwag.js"></script>
+    <script language="javascript" type="text/javascript" src="Diglett.js"></script>
+    <script language="javascript" type="text/javascript" src="Bulbasaur.js"></script>
+    <script language="javascript" type="text/javascript" src="Magnemite.js"></script>
+    <script language="javascript" type="text/javascript" src="Pikachu.js"></script> -->
+    <script language="javascript" type="text/javascript" src="sketch.js"></script>
+
+    <!-- custom styles -->
+    <style>
+            body {
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+            }
+            
+            @media screen and (orientation:portrait) {
+                #portrait_warning {
+                    position: fixed;
+                    top: 0px;
+                    left: 0px;
+                    width: 100%;
+                    height: 100%;
+                    text-align: center;
+                    background: white;
+                    z-index: 1000;
+                    display: block;
+                }
+            }
+
+      /* hides the rotational warning when the screen is in landscape mode */
+            @media screen and (orientation:landscape) {
+                #portrait_warning {
+                    display: none;
+                }
+            }
+
+    </style>
+  </head>
+  <body>
+
+    <!-- modal box to tell the user to rotate their device into landscape mode - the AR toolkit only reliably renders in landscape mode -->
+    <div id="portrait_warning">
+        <h1>Rotate your device into landscape mode!</h1>
+    </div>
+
+    <!-- Define A-Frame VR Scene and set it up so that it will be manipulated through AR.js -->
+    <a-scene id="ARScene" embedded arjs='sourceType: webcam; debugUIEnabled: false; detectionMode: mono;'>
+
+        <!-- set up graphics we want to use as assets, same as in A-Frame VR-->
+        <a-assets>
+
+            <img id="floor_color" src="images/floor_color.png">
+
+            <img id="poliwag_face" src="images/poliwag/poliwag_face.png">
+            <img id="poliwag_face_blink" src="images/poliwag/poliwag_face_blink.png">
+            <img id="poliwag_mouth" src="images/poliwag/poliwag_mouth.png">
+
+            <img id="diglett_face" src="images/diglett/diglett_face.png">
+            <img id="diglett_face_blink" src="images/diglett/diglett_face_blink.png">
+            <img id="diglett_nose" src="images/diglett/diglett_nose.png">
+
+            <img id="bulbasaur_face" src="images/bulbasaur/bulbasaur_face.png">
+            <img id="bulbasaur_face_blink" src="images/bulbasaur/bulbasaur_face_blink.png">
+            <img id="bulbasaur_face_top" src="images/bulbasaur/bulbasaur_face_top.png">
+            <img id="bulbasaur_body" src="images/bulbasaur/bulbasaur_body.png">
+            <img id="bulbasaur_seed_side" src="images/bulbasaur/bulbasaur_seed_side.png">
+            <img id="bulbasaur_seed_side2" src="images/bulbasaur/bulbasaur_seed_side2.png">
+            <img id="bulbasaur_seed_top" src="images/bulbasaur/bulbasaur_seed_top.png">
+            <img id="bulbasaur_seedtop_side" src="images/bulbasaur/bulbasaur_seedtop_side.png">
+            <img id="bulbasaur_seedtop_top" src="images/bulbasaur/bulbasaur_seedtop_top.png">
+
+            <img id="magnemite_face" src="images/magnemite/magnemite_face.png">
+            <img id="magnemite_face_blink" src="images/magnemite/magnemite_face_blink.png">
+            <img id="magnemite_face_screw" src="images/magnemite/magnemite_face_screw.png">
+            <img id="magnemite_face_screwtop_box" src="images/magnemite/magnemite_face_screwtop_box.png">
+            <img id="magnemite_top_screw" src="images/magnemite/magnemite_top_screw.png">
+
+            <img id="pikachu_face" src="images/pikachu/pikachu_face.png">
+            <img id="pikachu_face_blink" src="images/pikachu/pikachu_face_blink.png">
+            <img id="pikachu_top" src="images/pikachu/pikachu_top.png">
+            <img id="pikachu_left" src="images/pikachu/pikachu_left.png">
+            <img id="pikachu_right" src="images/pikachu/pikachu_right.png">
+
+            <img id="slowpoke_face" src="images/slowpoke/slowpoke_face.png">
+            <img id="slowpoke_face_blink" src="images/slowpoke/slowpoke_face_blink.png">
+            <img id="slowpoke_mouth_top" src="images/slowpoke/slowpoke_mouth_top.png">
+            <img id="slowpoke_mouth_bottom" src="images/slowpoke/slowpoke_mouth_bottom.png">
+            <img id="slowpoke_ear_left" src="images/slowpoke/slowpoke_ear_left.png">
+            <img id="slowpoke_ear_right" src="images/slowpoke/slowpoke_ear_right.png">
+
+            <img id="shiny_poliwag_face" src="images/shiny_poliwag/shiny_poliwag_face.png">
+            <img id="shiny_poliwag_face_blink" src="images/shiny_poliwag/shiny_poliwag_face_blink.png">
+            <img id="shiny_poliwag_mouth" src="images/shiny_poliwag/shiny_poliwag_mouth.png">
+
+            <img id="shiny_diglett_face" src="images/shiny_diglett/shiny_diglett_face.png">
+            <img id="shiny_diglett_face_blink" src="images/shiny_diglett/shiny_diglett_face_blink.png">
+            <img id="shiny_diglett_nose" src="images/shiny_diglett/shiny_diglett_nose.png">
+
+            <img id="shiny_bulbasaur_face" src="images/shiny_bulbasaur/shiny_bulbasaur_face.png">
+            <img id="shiny_bulbasaur_face_blink" src="images/shiny_bulbasaur/shiny_bulbasaur_face_blink.png">
+            <img id="shiny_bulbasaur_face_top" src="images/shiny_bulbasaur/shiny_bulbasaur_face_top.png">
+            <img id="shiny_bulbasaur_body" src="images/shiny_bulbasaur/shiny_bulbasaur_body.png">
+            <img id="shiny_bulbasaur_seed_side" src="images/shiny_bulbasaur/shiny_bulbasaur_seed_side.png">
+            <img id="shiny_bulbasaur_seed_side2" src="images/shiny_bulbasaur/shiny_bulbasaur_seed_side2.png">
+            <img id="shiny_bulbasaur_seed_top" src="images/shiny_bulbasaur/shiny_bulbasaur_seed_top.png">
+            <img id="shiny_bulbasaur_seedtop_side" src="images/shiny_bulbasaur/shiny_bulbasaur_seedtop_side.png">
+            <img id="shiny_bulbasaur_seedtop_top" src="images/shiny_bulbasaur/shiny_bulbasaur_seedtop_top.png">
+
+            <img id="shiny_magnemite_face" src="images/shiny_magnemite/shiny_magnemite_face.png">
+            <img id="shiny_magnemite_face_blink" src="images/shiny_magnemite/shiny_magnemite_face_blink.png">
+            <img id="shiny_magnemite_face_screw" src="images/shiny_magnemite/shiny_magnemite_face_screw.png">
+            <img id="shiny_magnemite_face_screwtop_box" src="images/shiny_magnemite/shiny_magnemite_face_screwtop_box.png">
+            <img id="shiny_magnemite_top_screw" src="images/shiny_magnemite/shiny_magnemite_top_screw.png">
+
+            <img id="shiny_pikachu_face" src="images/shiny_pikachu/shiny_pikachu_face.png">
+            <img id="shiny_pikachu_face_blink" src="images/shiny_pikachu/shiny_pikachu_face_blink.png">
+            <img id="shiny_pikachu_top" src="images/shiny_pikachu/shiny_pikachu_top.png">
+            <img id="shiny_pikachu_left" src="images/shiny_pikachu/shiny_pikachu_left.png">
+            <img id="shiny_pikachu_right" src="images/shiny_pikachu/shiny_pikachu_right.png">
+
+            <img id="shiny_slowpoke_face" src="images/shiny_slowpoke/shiny_slowpoke_face.png">
+            <img id="shiny_slowpoke_face_blink" src="images/shiny_slowpoke/shiny_slowpoke_face_blink.png">
+            <img id="shiny_slowpoke_mouth_top" src="images/shiny_slowpoke/shiny_slowpoke_mouth_top.png">
+            <img id="shiny_slowpoke_mouth_bottom" src="images/shiny_slowpoke/shiny_slowpoke_mouth_bottom.png">
+            <img id="shiny_slowpoke_ear_left" src="images/shiny_slowpoke/shiny_slowpoke_ear_left.png">
+            <img id="shiny_slowpoke_ear_right" src="images/shiny_slowpoke/shiny_slowpoke_ear_right.png">
+
+            <a-asset id="egg_obj" src="egg/tinker.obj"></a-asset>
+            <a-asset id="egg_mtl" src="egg/obj.mtl"></a-asset>
+
+            <a-asset id="pokeball_obj" src="pokeball/poke_old.obj"></a-asset>
+            <a-asset id="pokeball_mtl" src="pokeball/poke_old.mtl"></a-asset>
+
+        </a-assets>
+
+        <!-- define the sky for this scene -->
+        <!-- <a-sky id="theSky" src="#sky1" color="rgb(255,255,255)"></a-sky> -->
+
+        <a-marker id="poliwagMarker" preset="custom" url="Markers/Poliwag.patt"></a-marker>
+        <a-marker id="diglettMarker" preset="custom" url="Markers/Diglett.patt"></a-marker>
+        <a-marker id="bulbasaurMarker" preset="custom" url="Markers/Bulbasaur.patt"></a-marker>
+        <a-marker id="magnemiteMarker" preset="custom" url="Markers/Magnemite.patt"></a-marker>
+        <a-marker id="pikachuMarker" preset="custom" url="Markers/Pikachu.patt"></a-marker>
+        <a-marker id="slowpokeMarker" preset="custom" url="Markers/Slowpoke.patt"></a-marker>
+        <a-marker id="zbMarker" preset="custom" url="Markers/zb.patt"></a-marker>
+
+        <a-entity camera></a-entity>
+    </a-scene>
+
+  </body>
+</html>
+
+
